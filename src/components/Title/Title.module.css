@@ -1,0 +1,115 @@
+.title {
+  display: block;
+  /* Central timing anchor for both STACKER and Burger 'B' */
+  --start: 3.25s;
+}
+
+.burger {
+  display: inline-block;
+  font-size: 0.8em; /* slightly smaller than STACKER */
+  line-height: 1;
+  transform-origin: left center;
+  position: relative;
+}
+
+.stacker {
+  display: inline-block;
+  position: relative;
+  /* Start shortly after the main title fly-in completes */
+  --start: 3.25s;
+}
+
+.letter {
+  display: inline-block;
+  transform-origin: center bottom;
+  opacity: 0; /* keep space reserved but hide until its own drop begins */
+  color: inherit;
+  /* compute per-letter delays */
+  --fall: calc(var(--start) + (var(--i) * 0.1s));
+  /* last letter starts at start + 0.6s, takes ~0.45s => lands ~ start + 1.05s */
+  /* straighten begins ~0.2s after last lands => base ~ start + 1.25s, then stagger */
+  --straighten: calc(var(--start) + 1.25s + (var(--i) * 0.05s));
+  will-change: transform, opacity;
+  animation: 
+    letterDrop 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.2) var(--fall) forwards,
+    straighten 0.28s ease-out var(--straighten) forwards;
+}
+
+@keyframes letterDrop {
+  0% { opacity: 1; transform: translateY(-220px) rotate(var(--angle, 0deg)); }
+  70% { opacity: 1; transform: translateY(8px) rotate(var(--angle, 0deg)) scale(1.04); }
+  85% { opacity: 1; transform: translateY(-4px) rotate(var(--angle, 0deg)) scale(1.08); }
+  100% { opacity: 1; transform: translateY(0) rotate(var(--angle, 0deg)) scale(1.0); }
+}
+
+/* Burger initial 'B' — larger and drops in sync with 'R' (index 6) */
+.burgerInitial {
+  display: inline-block;
+  font-size: 1.18em;
+  transform-origin: center bottom;
+  opacity: 0; /* hidden until the drop begins */
+  position: absolute; left: 0; top: 0;
+  --i: 6; /* sync with 'R' in STACKER */
+  --fall: calc(var(--start) + (var(--i) * 0.1s));
+  animation: letterDropB 0.38s cubic-bezier(0.2, 0.9, 0.3, 1.2) var(--fall) forwards;
+}
+
+.burgerSpacer { /* reserve space for the big B so it doesn't overlap 'urger' */
+  display: inline-block;
+  width: 0.75em; /* adjust if your font needs a wider/narrower slot */
+}
+
+@keyframes letterDropB {
+  0% { opacity: 1; transform: translateY(-220px) rotate(0deg); }
+  70% { opacity: 1; transform: translateY(8px) rotate(0deg) scale(1.04); }
+  85% { opacity: 1; transform: translateY(-4px) rotate(0deg) scale(1.08); }
+  100% { opacity: 1; transform: translateY(-1px) rotate(0deg) scale(1.0); }
+}
+
+@keyframes straighten {
+  from { transform: translateY(0) rotate(var(--angle, 0deg)); }
+  to { transform: translateY(0) rotate(0deg); }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .letter {
+    animation: fadeIn 0.3s ease var(--fall) forwards;
+  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* --- Debug helpers: add styles.debug to stacker to visualize layout --- */
+.debug {
+  position: relative;
+}
+
+.debug::before {
+  /* baseline guide */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, #fff6, #fff2);
+}
+
+.debug .letter {
+  outline: 1px dashed rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.06);
+}
+
+.debug .letter::after {
+  /* show index above each letter */
+  content: attr(data-i);
+  position: absolute;
+  top: -1.2em;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5em;
+  color: #fff;
+  background: rgba(0,0,0,0.45);
+  padding: 2px 4px;
+  border-radius: 4px;
+}
