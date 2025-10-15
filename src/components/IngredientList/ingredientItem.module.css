@@ -1,0 +1,350 @@
+.ingredientItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 6px 0;
+  padding: 6px 11px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  /* punchier color and darker midtones */
+  filter: saturate(1) contrast(1.40);
+  border-radius: 15px;
+  box-shadow:
+    /* deeper base shadow */
+    0 12px 24px rgba(29, 13, 20, 0.78),
+    /* beveled top highlight */
+    0 2px 0 rgba(191, 36, 36, 0.15),
+  /* saturated tinted aura (now uses optional --ingredient-glow fallbacking to color) */
+  0 0 22px color-mix(in srgb, var(--ingredient-glow, var(--ingredient-color)) 70%, #000 30%),
+    /* hard footing for weight */
+    0 8px 0 #1f1f1f,
+    /* inner depth */
+    inset 0 0 10px rgba(0, 0, 0, 0.55);
+  border: 2px solid #f1ceb1cc;
+  letter-spacing: 2px;
+  transform: perspective(600px) translateZ(12px) scale(1.02);
+  transition: transform 0.2s cubic-bezier(.25,.8,.25,1), box-shadow 0.2s;
+  /* enter animation: staggered from bottom to top */
+  /* uses --stack-delay for dynamic items, no big delay needed */
+  animation: stackIn 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.2) var(--stack-delay, 0s) both;
+}
+
+
+.ingredientItem:hover {
+  transform: perspective(600px) translateZ(24px) scale(1.05);
+  box-shadow:
+    0 3px 0 rgba(158, 151, 151, 0.25),
+    0 0 28px color-mix(in srgb, var(--ingredient-glow, var(--ingredient-color)) 75%, #00000089 25%);
+  background-color: color-mix(in srgb, var(--ingredient-color) 40%, #5d6e8d48 20%);
+}
+
+.ingredientItem:hover span {
+  color: var(--ingredient-color);
+  filter: saturate(1.8) brightness(1.15);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--ingredient-color) 60%, #fff 40%);
+}
+
+.ingredientItem span {
+  color: var(--ingredient-color);
+}
+
+.ingredientItem button {
+  --tint: var(--ingredient-color);
+  --edge-dark: color-mix(in srgb, var(--tint) 35%, #6d1212f1 65%);
+  --edge-light: color-mix(in srgb, var(--tint) 35%, #fff 65%);
+  --mid: color-mix(in srgb, var(--tint) 55%, #9c9c9c 45%);
+  --mid-dark: color-mix(in srgb, var(--tint) 45%, #666 55%);
+  --stroke: color-mix(in srgb, var(--tint) 20%, #1b1b1b 80%);
+  --glow: color-mix(in srgb, var(--tint) 50%, #fff 50%);
+
+  margin-left: 16px;
+  align-self: center;
+  min-width: 60px;
+  text-align: center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 7px 14px;
+  color: #fff;
+  border-radius: 20px;
+  border: 2px solid var(--stroke);
+  position: relative;
+  /* Layered metallic gradient + brushed texture */
+  background-image:
+    linear-gradient(220deg,
+      var(--edge-light) 0%,
+      var(--mid) 45%,
+      var(--mid-dark) 55%,
+      var(--edge-dark) 100%
+    ),
+    repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.06) 0 2px,
+      rgba(0,0,0,0.06) 2px 4px
+    );
+  background-blend-mode: overlay;
+  box-shadow:
+    /* base lift */
+    0 6px 0 #23272b,
+    0 10px 16px rgba(0,0,0,0.35),
+    /* rim highlight */
+    inset 0 1px 0 rgba(255,255,255,0.6),
+    inset 0 -1px 0 rgba(0,0,0,0.4),
+    /* inner glow tinted */
+    inset 0 0 18px color-mix(in srgb, var(--tint) 35%, #000 65%);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+
+.ingredientItem button::before {
+  /* glossy top sheen */
+  content: "";
+  position: absolute;
+  left: 6px; right: 6px; top: 4px; height: 45%;
+  border-radius: 10px 10px 8px 8px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.75), rgba(255,255,255,0.08));
+  pointer-events: none;
+}
+
+.ingredientItem button::after {
+  /* subtle diagonal specular highlight */
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(60deg, rgba(255,255,255,0.0) 40%, rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.0) 60%);
+  mix-blend-mode: screen;
+  opacity: .6;
+  pointer-events: none;
+}
+
+.ingredientItem button:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 0 #1e2124,
+    0 16px 22px rgba(0,0,0,0.45),
+    inset 0 1px 0 rgba(255,255,255,0.75),
+    inset 0 -1px 0 rgba(0,0,0,0.5),
+    inset 0 0 22px color-mix(in srgb, var(--tint) 40%, #000 60%);
+}
+
+.ingredientItem button:active {
+  transform: translateY(3px);
+  box-shadow:
+    0 3px 0 #1a1c1f,
+    0 6px 10px rgba(0,0,0,0.35),
+    inset 0 1px 0 rgba(255,255,255,0.5),
+    inset 0 -1px 0 rgba(0,0,0,0.6),
+    inset 0 0 16px color-mix(in srgb, var(--tint) 30%, #000 70%);
+}
+
+@keyframes stackIn {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) translateY(30px) translateZ(0) scale(0.98);
+    box-shadow:
+      0 0 0 rgba(0,0,0,0),
+      0 0 0 rgba(255,255,255,0),
+      0 0 0 rgba(0,0,0,0),
+      0 0 0 rgba(0,0,0,0),
+      inset 0 0 0 rgba(0,0,0,0);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) translateY(0) translateZ(12px) scale(1.02);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ingredientItem {
+    animation: fadeInItem 0.2s ease calc(var(--stack-start, 3.50s) + var(--stack-delay, 0s)) both;
+  }
+  @keyframes fadeInItem { from { opacity: 0; } to { opacity: 1; } }
+}
+
+/* Responsive Design for Ingredient Items */
+
+/* Tablets & Medium Screens (1024px and below) */
+@media screen and (max-width: 1024px) {
+  .ingredientItem {
+    padding: 6px 10px;
+    font-size: 1.1rem;
+    margin: 5px 0;
+  }
+
+  .ingredientItem button {
+    min-width: 55px;
+    padding: 6px 12px;
+    font-size: 1rem;
+    margin-left: 12px;
+  }
+}
+
+/* Tablets Portrait (768px and below) */
+@media screen and (max-width: 768px) {
+  .ingredientItem {
+    padding: 5px 9px;
+    font-size: 1rem;
+    margin: 4px 0;
+    letter-spacing: 1.5px;
+    border-radius: 12px;
+  }
+
+  .ingredientItem span {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ingredientItem button {
+    min-width: 50px;
+    padding: 5px 10px;
+    font-size: 0.95rem;
+    margin-left: 10px;
+    border-radius: 15px;
+  }
+
+  .ingredientItem button::before {
+    left: 4px;
+    right: 4px;
+    top: 3px;
+    height: 40%;
+  }
+}
+
+/* Mobile Devices (600px and below) */
+@media screen and (max-width: 600px) {
+  .ingredientItem {
+    padding: 5px 8px;
+    font-size: 0.9rem;
+    margin: 3px 0;
+    letter-spacing: 1px;
+    filter: saturate(0.95) contrast(1.3);
+    border-radius: 10px;
+    transform: perspective(600px) translateZ(8px) scale(1.01);
+  }
+
+  .ingredientItem:hover {
+    transform: perspective(600px) translateZ(16px) scale(1.04);
+    box-shadow:
+      0 2px 0 rgba(158, 151, 151, 0.2),
+      0 0 20px color-mix(in srgb, var(--ingredient-glow, var(--ingredient-color)) 70%, #00000089 25%);
+  }
+
+  .ingredientItem span {
+    font-size: 0.85rem;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ingredientItem button {
+    min-width: 45px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    margin-left: 8px;
+    border-radius: 12px;
+    border: 1.5px solid var(--stroke);
+  }
+
+  .ingredientItem button::before {
+    left: 3px;
+    right: 3px;
+    top: 2px;
+    height: 40%;
+  }
+
+  .ingredientItem button::after {
+    opacity: 0.4;
+  }
+}
+
+/* Small Mobile Devices (480px and below) */
+@media screen and (max-width: 480px) {
+  .ingredientItem {
+    padding: 4px 6px;
+    font-size: 0.8rem;
+    margin: 2px 0;
+    letter-spacing: 0.5px;
+    border: 1.5px solid #f1ceb1aa;
+  }
+
+  .ingredientItem span {
+    font-size: 0.75rem;
+  }
+
+  .ingredientItem button {
+    min-width: 40px;
+    padding: 3px 6px;
+    font-size: 0.75rem;
+    margin-left: 6px;
+    border-radius: 10px;
+    border: 1px solid var(--stroke);
+  }
+}
+
+/* Extra Small Devices (360px and below) */
+@media screen and (max-width: 360px) {
+  .ingredientItem {
+    padding: 3px 5px;
+    font-size: 0.7rem;
+    margin: 2px 0;
+    letter-spacing: 0px;
+    border: 1px solid #f1ceb188;
+  }
+
+  .ingredientItem span {
+    font-size: 0.65rem;
+  }
+
+  .ingredientItem button {
+    min-width: 35px;
+    padding: 2px 5px;
+    font-size: 0.65rem;
+    margin-left: 4px;
+  }
+}
+
+/* Landscape Mobile (max-height: 500px) */
+@media screen and (max-height: 500px) {
+  .ingredientItem {
+    padding: 3px 6px;
+    font-size: 0.85rem;
+    margin: 2px 0;
+  }
+
+  .ingredientItem button {
+    padding: 3px 6px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Touch-Friendly Adjustments */
+@media (hover: none) and (pointer: coarse) {
+  .ingredientItem {
+    transform: perspective(600px) translateZ(10px) scale(1.01);
+  }
+
+  .ingredientItem:active {
+    transform: perspective(600px) translateZ(18px) scale(1.04);
+  }
+
+  .ingredientItem button {
+    min-width: 50px;
+    padding: 6px 10px;
+    border-radius: 15px;
+  }
+
+  .ingredientItem button:active {
+    transform: translateY(2px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ingredientItem {
+    animation: fadeInItem 0.2s ease calc(var(--stack-start, 3.50s) + var(--stack-delay, 0s)) both;
+  }
+  @keyframes fadeInItem { from { opacity: 0; } to { opacity: 1; } }
+}

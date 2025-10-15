@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 import './App.css'
 // PSEUDO CODE STEP 1: Import IngredientList component from its file
@@ -9,27 +9,13 @@ import IngredientList from './components/IngredientList/IngredientList.jsx';
 // PSEUDO CODE STEP 2: Import BurgerStack component from its file
 
 import BurgerStack from './components/BurgerStack/BurgerStack.jsx';
+import Title from './components/Title/Title.jsx';
 
 
-import './App.css';
+import { availableIngredients as ingredientsData } from './data/ingredients.js';
 
 const App = () => {
-  const availableIngredients = [
-    { name: 'Kaiser Bun', color: 'saddlebrown' },
-    { name: 'Sesame Bun', color: 'sandybrown' },
-    { name: 'Gluten Free Bun', color: 'peru' },
-    { name: 'Lettuce Wrap', color: 'olivedrab' },
-    { name: 'Beef Patty', color: '#3F250B' },
-    { name: 'Soy Patty', color: '#3F250B' },
-    { name: 'Black Bean Patty', color: '#3F250B' },
-    { name: 'Chicken Patty', color: 'burlywood' },
-    { name: 'Lettuce', color: 'lawngreen' },
-    { name: 'Tomato', color: 'tomato' },
-    { name: 'Bacon', color: 'maroon' },
-    { name: 'Onion', color: 'lightyellow' },
-    { name: 'Cheddar Cheese', color: '#FDE18B' },
-    { name: 'Swiss Cheese', color: '#F1E1A8' },
-  ];
+  const availableIngredients = ingredientsData;
 // PSEUDO CODE STEP 4: Create a state variable called 'stack' initialized as empty array
 const [stack, setStack] = useState([]);
 
@@ -47,6 +33,7 @@ const removeFromBurger = (index) => {
     setVideoEnded(true);
   };
 
+  
   return (
     <>
       <video 
@@ -64,7 +51,7 @@ const removeFromBurger = (index) => {
       </video>
       <div className={`background-image ${videoEnded ? 'fade-in' : ''}`} />
       <main>
-        <h1>Burger St<span className="fade-bottom">a</span>cker</h1>
+        <Title />
         <section>
           <IngredientList 
             ingredients={availableIngredients} 
