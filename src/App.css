@@ -413,3 +413,29 @@ button:active {
     margin-top: 20px;
   }
 }
+
+/* ===== COPYRIGHT FOOTER ===== */
+.copyright {
+  position: fixed;
+  bottom: 10px;
+  right: 15px;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 1px;
+  z-index: 100;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+.copyright:hover {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 480px) {
+  .copyright {
+    font-size: 0.75rem;
+    bottom: 8px;
+    right: 10px;
+  }
+}

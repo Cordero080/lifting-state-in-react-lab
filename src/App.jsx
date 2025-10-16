@@ -1,6 +1,6 @@
 // src/App.jsx
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import './App.css'
 // PSEUDO CODE STEP 1: Import IngredientList component from its file
@@ -19,14 +19,18 @@ const App = () => {
 // PSEUDO CODE STEP 4: Create a state variable called 'stack' initialized as empty array
 const [stack, setStack] = useState([]);
 
-const addToBurger = (ingredient) => {
-  setStack([...stack, ingredient]);
-}
-const removeFromBurger = (index) => {
-  console.log('Removing ingredient at index:', index);
-  const newStack = stack.filter((ingredient, i) => i !== index);
-  setStack(newStack);
-}
+const addToBurger = useCallback((ingredient) => {
+  setStack(prev => [...prev, ingredient]);
+}, []);
+
+const removeFromBurger = useCallback((index) => {
+  setStack(prev => prev.filter((ingredient, i) => i !== index));
+}, []);
+
+const clearAll = useCallback(() => {
+  setStack([]);
+}, []);
+
   const [videoEnded, setVideoEnded] = useState(false);
 
   const handleVideoEnd = () => {
@@ -60,9 +64,11 @@ const removeFromBurger = (index) => {
           <BurgerStack 
             ingredients={stack}
             removeFromBurger={removeFromBurger}
+            clearAll={clearAll}
           />
         </section>
       </main>
+      <footer className="copyright">© 2025 Pablo Cordero</footer>
     </>
   );
 };
